@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To My Moon - Najmah Fathiinah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #e6fffa, #d1fae5);
+      color: #1a202c;
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0;
+      overflow-x: hidden; /* Prevent horizontal scrolling during animations */
+    }
+    body.loaded { opacity: 1; }
+    .font-serif { font-family: 'Playfair Display', serif; }
+    .card-bg { background-color: #c6f6d5; }
+    
+    /* Enhanced page transitions */
+    .page {
+      display: none;
+      opacity: 0;
+      transform: translateX(50px); /* Initial slide position */
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+    .page.active {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .page.slide-left {
+      transform: translateX(-50px);
+      opacity: 0;
+    }
+    .page.slide-right {
+      transform: translateX(50px);
+      opacity: 0;
+    }
+    
+    /* Photo animations */
+    .photo-frame {
+      border: 8px solid #a8e1ba;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      overflow: hidden; /* Ensure animations stay within the frame */
+    }
+    .photo-frame:hover {
+      transform: scale(1.02);
+    }
+    
+    /* Photo entrance animation */
+    .photo-enter {
+      animation: photo-fade-in 1s ease forwards;
+    }
+    
+    @keyframes photo-fade-in {
+      0% { 
+        opacity: 0;
+        transform: scale(0.9) rotate(-3deg);
+      }
+      100% { 
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+    
+    /* Existing animations */
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+    @keyframes confetti {
+      0% { transform: translateY(-100%) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+    .heart {
+      position: fixed;
+      color: #4ecd89;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 9999;
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: #38a169;
+      pointer-events: none;
+      animation: confetti 3s linear;
+    }
+  </style>
+</head>
+<body onload="init()">
+  <main class="min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+
+      <!-- Page 1 - Cover -->
+      <section id="page1" class="page active text-center py-12">
+        <div class="w-48 h-48 mx-auto rounded-full overflow-hidden shadow-xl border-4 border-[#c6f6d5] mb-8 photo-frame photo-enter">
+          <img src="images/najmah1.jpg" alt="My Moon" class="w-full h-full object-cover">
+        </div>
+        <h1 class="text-4xl md:text-6xl font-serif font-bold mb-4 text-[#276749]">
+          To Najmah Fathiinah
+        </h1>
+        <p class="text-2xl font-serif italic text-[#2f855a]">My Beautiful Moon</p>
+        <button onclick="nextPage(2)" class="mt-12 bg-[#38a169] hover:bg-[#276749] text-white font-bold py-3 px-8 rounded-full transition-transform hover:scale-105">
+          Start  →
+        </button>
+      </section>
+
+      <!-- Page 2 - Music -->
+      <section id="page2" class="page">
+        <div class="text-center py-8 min-h-screen flex items-center justify-center">
+          <div class="max-w-2xl w-full">
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+              <div class="photo-frame w-full md:w-1/2 h-96 rounded-lg overflow-hidden">
+                <img src="images/najmah2.jpg" alt="Najmah" class="w-full h-full object-cover">
+              </div>
+              <div class="w-full md:w-1/2">
+                <h2 class="text-2xl font-serif mb-4 text-[#276749]">Our Song</h2>
+                <div class="aspect-video rounded-lg overflow-hidden">
+                  <iframe src="https://open.spotify.com/embed/track/6klFWv2xDGeTDoiKTtx4hg" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                    class="rounded-lg">
+                  </iframe>
+                </div>
+                <!-- Tombol Lirik -->
+                <button onclick="toggleLyrics()" class="mt-4 bg-[#38a169] hover:bg-[#276749] text-white font-bold py-2 px-4 rounded-full">
+                  Show Lyrics
+                </button>
+              </div>
+            </div>
+            
+            <!-- Container Lirik -->
+            <div id="lyricsContainer" class="hidden card-bg rounded-lg p-6 mt-6 text-left font-serif">
+              <pre class="whitespace-pre-wrap leading-relaxed">
+🎶 Everyone Adores You (at least I do) - Matt Maltese 🎶
+
+You can act all shy
+But you know that I want you
+In the dead of night
+I want to live with you
+
+So terrified of the road that takes you
+Me too
+Don't modify, everyone adores you
+At least I do ♪
+
+Right where the black wood sighs
+I look at you, through and through
+Right where your father died
+I'll hold on to your hand
+
+So terrified of the road that takes you
+Me too
+Don't modify, everyone adores you
+At least I do, ha-ha-ha
+
+Everybody has you up on their wall sometimes
+Everybody thinks of you when they sleep at night
+When I say, "Everybody"
+I'm actually referring to me
+Eeh-eeh, eeh, eeh
+              </pre>
+            </div>
+
+            <div class="mt-8 flex justify-center space-x-4">
+              <button onclick="prevPage(1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-full">
+                ← Back
+              </button>
+              <button onclick="nextPage(3)" class="bg-[#38a169] hover:bg-[#276749] text-white font-bold py-2 px-6 rounded-full">
+                Next →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 3 - Memories -->
+      <section id="page3" class="page">
+        <div class="py-8 min-h-screen">
+          <h2 class="text-2xl font-serif mb-6 text-center text-[#276749]">Wanna Make Another Memories Together?</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            <div class="photo-frame">
+              <img src="images/us1.jpg" class="w-full h-64 object-cover rounded-lg">
+            </div>
+            <div class="photo-frame">
+              <img src="images/us2.jpg" class="w-full h-64 object-cover rounded-lg">
+            </div>
+            <div class="photo-frame">
+              <img src="images/us3.jpg" class="w-full h-64 object-cover rounded-lg">
+            </div>
+            <div class="photo-frame">
+              <img src="images/us4.jpg" class="w-full h-64 object-cover rounded-lg">
+            </div>
+          </div>
+          <div class="mt-8 flex justify-center space-x-4">
+            <button onclick="prevPage(2)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-full">
+              ← Back
+            </button>
+            <button onclick="nextPage(4)" class="bg-[#38a169] hover:bg-[#276749] text-white font-bold py-2 px-6 rounded-full">
+              Next →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 4 - Letter -->
+      <section id="page4" class="page">
+        <div class="py-8 min-h-screen">
+          <div class="flex flex-col md:flex-row gap-8">
+            <div class="card-bg rounded-lg p-8 shadow-md flex-1">
+              <h2 class="text-2xl font-serif mb-6 text-center text-[#276749]">My Dearest Moon</h2>
+              <div class="space-y-4 font-serif text-lg leading-relaxed">
+                <p>To my beloved Najmah Fathiinah, my beautiful Moon,</p>
+                <p>Like the moon that glows in the night sky, you've illuminated my life with your radiance. Your presence has been my guiding light through the darkest nights, and your smile brightens even my cloudiest days.</p>
+                <p>Every moment spent with you feels like a dream I never want to wake from. Your laughter is the melody that plays in my heart, and your voice is the sweetest sound that calms my restless soul.</p>
+                <p>In your eyes, I've found a universe of love, understanding, and warmth. Your kindness touches everyone around you, but I'm the fortunate one who gets to witness the full spectrum of your beautiful heart.</p>
+                <p class="text-right">With all my love,<br><span class="italic">Rafif s</span></p>
+              </div>
+            </div>
+            <div class="w-full md:w-1/3 space-y-4">
+              <div class="photo-frame">
+                <img src="images/najmah3.jpg" class="w-full h-48 object-cover rounded-lg">
+              </div>
+              <div class="photo-frame">
+                <img src="images/najmah4.jpg" class="w-full h-48 object-cover rounded-lg">
+              </div>
+            </div>
+          </div>
+          <div class="mt-8 flex justify-center space-x-4">
+            <button onclick="prevPage(3)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-full">
+              ← Back
+            </button>
+            <button onclick="nextPage(5)" class="bg-[#38a169] hover:bg-[#276749] text-white font-bold py-2 px-6 rounded-full">
+              Next →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 5 - Proposal -->
+      <section id="page5" class="page">
+        <div class="min-h-screen py-12 flex items-center justify-center">
+          <div class="card-bg rounded-lg p-8 shadow-md mx-4 max-w-lg">
+            <div class="w-64 h-64 mx-auto rounded-full overflow-hidden shadow-xl border-4 border-[#c6f6d5] mb-8 photo-frame">
+              <img src="images/najmah5.jpg" alt="Najmah" class="w-full h-full object-cover">
+            </div>
+            <h2 class="text-3xl font-serif mb-6 text-center text-[#276749]">Najmah Fathiinah</h2>
+            <p class="text-xl mb-8 font-serif text-center">Will you be my forever Moon?</p>
+            <div class="flex justify-center space-x-4">
+              <button onclick="handleYes()" class="bg-[#38a169] hover:bg-[#276749] text-white font-bold py-3 px-8 rounded-full">
+                Yes, Always! 🌙
+              </button>
+              <button onclick="handleNo()" id="noButton" class="bg-[#e53e3e] hover:bg-[#c53030] text-white font-bold py-3 px-8 rounded-full">
+                Let me think...
+              </button>
+            </div>
+            <p id="responseMessage" class="mt-6 text-lg font-serif text-[#276749] text-center"></p>
+            <div class="mt-8 flex justify-center">
+              <button onclick="prevPage(4)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-full">
+                ← Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Page Navigation with improved transitions
+    function init() {
+      document.body.classList.add('loaded');
+      setInterval(createHeart, 500);
+      animatePhotos();
+    }
+
+    let currentPage = 1;
+    let isAnimating = false;
+
+    function showPage(pageNumber, direction = 'next') {
+      if (isAnimating) return;
+      isAnimating = true;
+      
+      const currentPageElement = document.getElementById(`page${currentPage}`);
+      const nextPageElement = document.getElementById(`page${pageNumber}`);
+      
+      // Direction-based animation
+      if (direction === 'next') {
+        currentPageElement.classList.add('slide-left');
+        nextPageElement.classList.add('slide-right');
+      } else {
+        currentPageElement.classList.add('slide-right');
+        nextPageElement.classList.add('slide-left');
+      }
+      
+      // Wait for slide out animation
+      setTimeout(() => {
+        currentPageElement.classList.remove('active');
+        currentPageElement.classList.remove('slide-left', 'slide-right');
+        
+        // Show the new page
+        nextPageElement.classList.add('active');
+        nextPageElement.classList.remove('slide-left', 'slide-right');
+        
+        // Reset animation flag
+        isAnimating = false;
+        currentPage = pageNumber;
+        
+        // Animate photos on the new page
+        animatePhotos();
+        
+        // Scroll to top
+        window.scrollTo(0, 0);
+      }, 500);
+    }
+
+    function nextPage(next) { 
+      showPage(next, 'next'); 
+    }
+    
+    function prevPage(prev) { 
+      showPage(prev, 'prev'); 
+    }
+
+    // Photo animation function
+    function animatePhotos() {
+      const currentPageElement = document.getElementById(`page${currentPage}`);
+      const photos = currentPageElement.querySelectorAll('.photo-frame');
+      
+      photos.forEach((photo, index) => {
+        // Reset animation
+        photo.classList.remove('photo-enter');
+        
+        // Trigger reflow
+        void photo.offsetWidth;
+        
+        // Add animation with delay based on index
+        setTimeout(() => {
+          photo.classList.add('photo-enter');
+        }, index * 200);
+      });
+    }
+
+    // Hearts Animation
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.innerHTML = '💚';
+      heart.className = 'heart';
+      heart.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        font-size: ${Math.random() * 20 + 10}px;
+        animation-duration: ${Math.random() * 3 + 5}s;
+      `;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    // Toggle lyrics function
+    function toggleLyrics() {
+      const lyricsContainer = document.getElementById('lyricsContainer');
+      lyricsContainer.classList.toggle('hidden');
+    }
+
+    // Proposal Logic
+    let noCount = 0;
+    const responses = [
+      "Are you sure... ",
+      "Maybe I should ask more sweetly ? ",
+      "Really ?? ",
+      "Okay, I appreciate that "
+    ];
+
+    function handleYes() {
+      // Confetti Effect
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        document.body.appendChild(confetti);
+      }
+
+      document.getElementById("responseMessage").innerHTML = 
+        "YAYYYYY <br>You've made me the happiest person in the universe <br>I love you Moen Sayang 💚";
+      
+      document.getElementById("noButton").style.display = 'none';
+    }
+
+    function handleNo() {
+      const messageElement = document.getElementById("responseMessage");
+      messageElement.classList.remove('hidden');
+      
+      if (noCount < responses.length - 1) {
+        messageElement.textContent = responses[noCount];
+        noCount++;
+        const yesButton = document.querySelector('[onclick="handleYes()"]');
+        yesButton.style.transform = `scale(${1 + (noCount * 0.2)})`;
+        yesButton.textContent = `Yes${'!'.repeat(noCount + 1)}`;
+      } else {
+        messageElement.innerHTML = responses[responses.length - 1];
+        document.getElementById("noButton").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
